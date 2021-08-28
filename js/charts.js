@@ -69,14 +69,30 @@ function buildCharts(sample) {
     var  otu_labels = firstSample.otu_labels
     var  sample_values = firstSample.sample_values
 
-    // 7. Create the yvalues for the bar chart.
-    var otu_ids_bar = otu_ids.slice(0,10).map(x=>'OTU '+x.toString())
-
     // 8. Create the trace for the bar chart. 
+      //sort the values by sample_values
+    topTen=[]
+    for (let x = 0; x<firstSample.sample_values.length;x++) {
+      topTen.push({
+        otu_ids: 'OTU ' + firstSample.otu_ids[x].toString(),
+        otu_labels: firstSample.otu_labels[x],
+        sample_values: firstSample.sample_values[x]
+      })
+    };
+    topTen = topTen.sort((a,b)=>b.sample_values-a.sample_values).slice(0,10)
+    var bar_otu_ids = []
+    var bar_otu_labels = []
+    var bar_sample_values = []
+    for (samp of topTen){
+      bar_otu_ids.push(samp.otu_ids)
+      bar_otu_labels.push(samp.otu_labels)
+      bar_sample_values.push(samp.sample_values)
+    }
+      //trace for bar
     var barData = [{
-      x: sample_values,
-      y: otu_ids_bar,
-      text: otu_labels,
+      x: bar_sample_values,
+      y: bar_otu_ids,
+      text: bar_otu_labels,
       type: "bar", 
       orientation: 'h'
     }];
@@ -85,7 +101,9 @@ function buildCharts(sample) {
     var barLayout = {
       title: "Top 10 Bacteria Cultures Found",
       yaxis: {autorange: "reversed"},
-      width: "fit-content"
+      autosize: true,
+      plot_bgcolor: '#c7c7c7',
+      hoverlabel: {font:{size:8}}
     };
 
     // 10. Use Plotly to plot the data with the layout. 
@@ -104,9 +122,10 @@ function buildCharts(sample) {
     var bubbleLayout = {
       title: "Bacteria Cultures Per Sample",
       hovermode: "closest",
-      xaxis: {title:"OTU ID",
-      autosize: false
-    }
+      xaxis: {title:"OTU ID"},
+      autosize: true,
+      paper_bgcolor: '#c7c7c7',
+      plot_bgcolor: 'white'
     };
 
     // 3. Use Plotly to plot the data with the layout.
@@ -114,6 +133,15 @@ function buildCharts(sample) {
 
     // 1. Create a variable that filters the metadata array for the object with the desired sample number.
     var metadata = data.metadata;
+    var avg_wfreq = 0
+
+    // Compute reference value for gauge chart delta
+    for (x of metadata) {
+      avg_wfreq+=x.wfreq
+    }
+    avg_wfreq = avg_wfreq/metadata.length
+    avg_wfreq = avg_wfreq.toFixed(2)
+
     // Filter the data for the object with the desired sample number
     var metadataArray = metadata.filter(sampleObj => sampleObj.id == sample);
 
@@ -121,15 +149,16 @@ function buildCharts(sample) {
     var metadataPick = metadataArray[0];
 
     // 3. Create a variable that holds the washing frequency.
-    var wfreq = metadataPick.wfreq
+    var wfreq = metadataPick.wfreq.toFixed(2)
 
     // 4. Create the trace for the gauge chart.
     var gaugeData = [{
         domain: { x: [0, 1], y: [0, 1] },
         value: wfreq,
-        title: { text: "<span style='font-weight:bold'>Belly Button Washing Frequency</span><br><span style='font-size:0.8em'>Scrubs per Week</span>" },
+        title: { text: "<span style='font-weight:bold;font-size:90%'>Belly Button Washing Frequency</span><br><span style='font-size:0.8em'>Scrubs per Week (Avg 2.55)</span>" },
         type: "indicator",
-        mode: "gauge+number",
+        mode: "gauge+number+delta",
+        delta: { reference: avg_wfreq },
         gauge: {
           bar: {color: "black"},
           axis: { range: [null, 10],tickmode:'array',tickvals: [0,2,4,6,8,10] },
@@ -142,14 +171,8 @@ function buildCharts(sample) {
           ]
         }
     }];
-    
-    // 5. Create the layout for the gauge chart.
-    var gaugeLayout = {
-      autosize: false, 
-      width: "fit-content"
-    };
 
     // 6. Use Plotly to plot the gauge data and layout.
-    Plotly.newPlot("gauge",gaugeData,gaugeLayout);
+    Plotly.newPlot("gauge",gaugeData);
   });
 }
