@@ -135,12 +135,12 @@ function buildCharts(sample) {
       x: barAvg,
       y: bar_otu_ids,
       mode: "markers",
-      marker: {color:"black"}
+      marker: {color:"black",size:7}
     }
     barData = [barData,barDataAvg];
     // 9. Create the layout for the bar chart. 
     var barLayout = {
-      title: { text: "<span style='font-weight:bold;font-size:90%'>Top 10 Bacteria Cultures Found</span><br><span style='font-size:0.65em'>(with mean sample count per OTU ID)</span>" },
+      title: { text: "<span style='font-weight:bold;font-size:90%'>Top 10 Bacteria Cultures Found</span><br><span style='font-size:0.65em'>(with mean sample values per OTU ID)</span>" },
       yaxis: {autorange: "reversed"},
       autosize: true,
       plot_bgcolor: '#c7c7c7',
@@ -166,6 +166,7 @@ function buildCharts(sample) {
       title: "Bacteria Cultures Per Sample",
       hovermode: "closest",
       xaxis: {title:"OTU ID"},
+      yaxis: {title:"Sample Value"},
       autosize: true,
       paper_bgcolor: '#c7c7c7',
       plot_bgcolor: 'white'
@@ -198,7 +199,7 @@ function buildCharts(sample) {
     var gaugeData = [{
         domain: { x: [0, 1], y: [0, 1] },
         value: wfreq,
-        title: { text: "<span style='font-weight:bold;font-size:90%'>Belly Button Washing Frequency</span><br><span style='font-size:0.8em'>Scrubs per Week (Avg 2.55)</span>" },
+        title: { text: "<span style='font-weight:bold;font-size:90%'>Belly Button Washing Frequency</span><br><span style='font-size:0.8em'>Scrubs per Week (mean wfreq=2.55)</span>" },
         type: "indicator",
         mode: "gauge+number+delta",
         delta: { reference: avg_wfreq },
