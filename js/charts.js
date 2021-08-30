@@ -116,7 +116,7 @@ function buildCharts(sample) {
     for (let x=0;x<Object.values(otuTotal).length;x++){
       otuAvg['OTU '+Object.keys(otuTotal)[x]] = Object.values(otuTotal)[x]/Object.values(otuCount)[x]
     }
-      //save values for OTU ID in the bar chart
+      //save avg values for OTU ID in the bar chart
     var barAvg=[]
     for (x of bar_otu_ids) {
       barAvg.push(otuAvg[x])
@@ -140,7 +140,7 @@ function buildCharts(sample) {
     barData = [barData,barDataAvg];
     // 9. Create the layout for the bar chart. 
     var barLayout = {
-      title: "Top 10 Bacteria Cultures Found",
+      title: { text: "<span style='font-weight:bold;font-size:90%'>Top 10 Bacteria Cultures Found</span><br><span style='font-size:0.65em'>(with mean sample count per OTU ID)</span>" },
       yaxis: {autorange: "reversed"},
       autosize: true,
       plot_bgcolor: '#c7c7c7',
