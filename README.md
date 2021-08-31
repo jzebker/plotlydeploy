@@ -41,3 +41,6 @@ Roza has a partially completed dashboard that she needs to finish. She has a com
 </p>
 
 • by default, the charts show data for Test Subject ID No. 940 the first time the site loads
+
+## Deliverable 4
+• see the [website](http://jzebker.github.io/plotlydeploy) for cool customizations
