@@ -44,3 +44,5 @@ Roza has a partially completed dashboard that she needs to finish. She has a com
 
 ## Deliverable 4
 • see the [website](http://jzebker.github.io/plotlydeploy) for cool customizations
+
+• site works on mobile phones
