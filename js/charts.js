@@ -140,7 +140,7 @@ function buildCharts(sample) {
     barData = [barData,barDataAvg];
     // 9. Create the layout for the bar chart. 
     var barLayout = {
-      title: { text: "<span style='font-weight:bold;font-size:90%'>Top 10 Bacteria Cultures Found</span><br><span style='font-size:0.65em'>(with mean sample values per OTU ID)</span>" },
+      title: { text: "<span style='font-weight:bold;font-size:90%'>Top 10 Bacteria Cultures Found</span><br><span style='font-size:0.65em'>(Black dots represent mean sample values per OTU ID)</span>" },
       yaxis: {autorange: "reversed"},
       autosize: true,
       plot_bgcolor: '#c7c7c7',
